@@ -5,6 +5,7 @@
  */
 package edu.szatkowski.jakub.websocketquizmaven.Managers;
 
+import edu.szatkowski.jakub.websocketquizmaven.Helpers.Enums.StatementType;
 import java.util.ArrayList;
 import java.util.List;
 import javax.websocket.Session;
@@ -21,16 +22,24 @@ public class AccountManager {
         this.loggedInSessions = new ArrayList<>();
     }
     
-    public void signIn(Session session, String username, String password)
+    public StatementType signIn(Session session, String username, String password)
     {
-        if(username.equals("admin") && password.equals("admin1"))
+        if(this.isLoggedIn(session))
+            return StatementType.AlreadyLoggedIn;
+        if(username.equals("admin") && password.equals("admin1")){
             this.loggedInSessions.add(session);
+            return StatementType.SignInSuccessful;
+        }
+        return StatementType.WrongCredentials;
     }
     
-    public void signOut(Session session)
+    public StatementType signOut(Session session)
     {
-        if(this.loggedInSessions.contains(session))
+        if(this.isLoggedIn(session)){
             this.loggedInSessions.remove(session);
+            return StatementType.SignOutSuccessful;
+        }
+        return StatementType.NotLoggedIn;
     }
     
     public boolean isLoggedIn(Session session)
