@@ -5,9 +5,11 @@
  */
 package edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands;
 
+import edu.szatkowski.jakub.websocketquizmaven.Helpers.ResponseGenerator;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
+import edu.szatkowski.jakub.websocketquizmaven.Responses.IsLoggedInResponse;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +26,9 @@ public class IsLoggedInCommand implements ICommand{
     public void execute(Session session, AccountManager accountManager, GameManager gameManager) {
         boolean loggedIn = accountManager.isLoggedIn(session);
         try {
-            session.getBasicRemote().sendObject(loggedIn);
+            ResponseGenerator generator = new ResponseGenerator();
+            IsLoggedInResponse response = new IsLoggedInResponse(loggedIn);
+            session.getBasicRemote().sendObject(generator.generateResponse(response));
         } catch (IOException ex) {
             Logger.getLogger(IsLoggedInCommand.class.getName()).log(Level.SEVERE, null, ex);
         } catch (EncodeException ex) {
