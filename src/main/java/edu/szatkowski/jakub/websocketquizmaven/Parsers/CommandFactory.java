@@ -10,8 +10,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.google.gson.reflect.TypeToken;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.*;
+import java.lang.reflect.Type;
 
 /**
  *
@@ -21,18 +23,15 @@ public class CommandFactory {
     public ICommand getCommand(String commandName, JsonObject obj)
     {
         Gson gson = new Gson();
-        String a = obj.toString();
-        switch(commandName)
+        try{
+            String name = this.getClass().getPackage().getName()+".Commands."+commandName+"Command";
+            Class<?> cls = Class.forName(name);
+            TypeToken<?> typeToken = TypeToken.get(cls);
+            return gson.fromJson(obj, typeToken.getType());
+        }
+        catch(ClassNotFoundException ex)
         {
-            case "ping":
-                return gson.fromJson(a, PingCommand.class);
-            case "sign_in":
-                return gson.fromJson(a, SignInCommand.class);
-            case "sign_out":
-                return new SignInCommand();
-            case "ïs_logged_in":
-                return new IsLoggedInCommand();
-        };
-        return null;
+            return null;
+        }
     }
 }
