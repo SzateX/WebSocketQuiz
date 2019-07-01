@@ -9,7 +9,7 @@ import edu.szatkowski.jakub.websocketquizmaven.Helpers.Enums.StatementType;
 import edu.szatkowski.jakub.websocketquizmaven.Helpers.ResponseGenerator;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
-import edu.szatkowski.jakub.websocketquizmaven.Models.Game;
+import edu.szatkowski.jakub.websocketquizmaven.HelperModels.Game;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.PlayerAddedResponse;
 import java.io.IOException;

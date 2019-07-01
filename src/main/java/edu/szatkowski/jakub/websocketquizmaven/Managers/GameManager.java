@@ -5,7 +5,7 @@
  */
 package edu.szatkowski.jakub.websocketquizmaven.Managers;
 
-import edu.szatkowski.jakub.websocketquizmaven.Models.Game;
+import edu.szatkowski.jakub.websocketquizmaven.HelperModels.Game;
 import java.util.HashMap;
 import java.util.Random;
 
