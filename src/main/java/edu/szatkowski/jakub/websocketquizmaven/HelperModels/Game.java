@@ -5,6 +5,9 @@
  */
 package edu.szatkowski.jakub.websocketquizmaven.HelperModels;
 
+import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
+import edu.szatkowski.jakub.websocketquizmaven.Models.Category;
+import edu.szatkowski.jakub.websocketquizmaven.Models.Question;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,18 +26,24 @@ public class Game {
     private int pin;
     private transient List<Session> sessions;
     private int numberOfPlayers;
+    private Category category;
     
     private transient ScheduledExecutorService deffer;
     private boolean gameStared;
     
-    private int questionNo = 0;
+    private transient QuestionsManager questionsManager;
     
-    public Game(int pin)
+    private int questionNo = 0;
+    List<Question> questions;
+    
+    public Game(int pin, Category category, QuestionsManager questionsManager)
     {
         this.pin = pin;
         sessions = new ArrayList<>();
         this.numberOfPlayers = 0;
         this.gameStared = false;
+        this.category = category;
+        this.questionsManager = questionsManager;
     }
     
     public int getNumberOfPlayers()
@@ -63,6 +72,7 @@ public class Game {
     {
         this.questionNo = 0;
         this.gameStared = true;
+        this.questions = this.questionsManager.getQuestionsFromCategory(category.categoryName);
         this.deffer = Executors.newSingleThreadScheduledExecutor();
         deffer.schedule(() -> this.sendQuestion(), 10, TimeUnit.SECONDS);
     }

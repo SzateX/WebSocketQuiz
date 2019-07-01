@@ -15,12 +15,14 @@ import java.util.Random;
  */
 public class GameManager {
     private HashMap<Integer, Game> games;
+    private QuestionsManager questionsManager;
     
-    public GameManager() {
+    public GameManager(QuestionsManager questionsManager) {
         games = new HashMap<>();
+        this.questionsManager = questionsManager;
     }
     
-    public int createGame()
+    public int createGame(String category)
     {
         Random rand = new Random();
         for(int i = 0; i < 100; i++)
@@ -28,7 +30,7 @@ public class GameManager {
             int generatedPin = rand.nextInt((999999 - 100000) + 1) + 100000;
             if(!this.games.containsKey(generatedPin))
             {
-                Game newGame = new Game(generatedPin);
+                Game newGame = new Game(generatedPin, questionsManager.getCategoryByName(category), questionsManager);
                 games.put(generatedPin, newGame);
                 return generatedPin;
             }

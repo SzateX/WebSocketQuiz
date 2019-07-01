@@ -21,7 +21,8 @@ import javax.websocket.Session;
  * @author Jakub.Szatkowski.2
  */
 public class CreateGameCommand implements ICommand{
-
+    String category;
+    
     @Override
     public void execute(Session session, AccountManager accountManager, GameManager gameManager) {
         ResponseGenerator responseGenerator = new ResponseGenerator();
@@ -32,7 +33,7 @@ public class CreateGameCommand implements ICommand{
                 return;
             }
             
-            int pin = gameManager.createGame();
+            int pin = gameManager.createGame(this.category);
             if(pin == -1)
             {
                 session.getBasicRemote().sendText(responseGenerator.generateErrorResponse(StatementType.GameNotCreated));
