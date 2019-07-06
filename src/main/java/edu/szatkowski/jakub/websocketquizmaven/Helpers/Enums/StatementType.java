@@ -10,5 +10,5 @@ package edu.szatkowski.jakub.websocketquizmaven.Helpers.Enums;
  * @author Szatku
  */
 public enum StatementType {
-    WrongCredentials, AlreadyLoggedIn, SignInSuccessful, NotLoggedIn, SignOutSuccessful, GameNotCreated, CommandNotFound, GameNotExist, NotCommand
+    WrongCredentials, AlreadyLoggedIn, SignInSuccessful, NotLoggedIn, SignOutSuccessful, GameNotCreated, CommandNotFound, GameNotExist, NotCommand, NotInGame, AnsweredQuestion
 }
