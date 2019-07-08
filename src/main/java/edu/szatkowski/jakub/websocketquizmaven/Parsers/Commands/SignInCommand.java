@@ -9,6 +9,7 @@ import edu.szatkowski.jakub.websocketquizmaven.Helpers.Enums.StatementType;
 import edu.szatkowski.jakub.websocketquizmaven.Helpers.ResponseGenerator;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
+import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.SignInResponse;
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class SignInCommand implements ICommand{
     String password;
     
     @Override
-    public void execute(Session session, AccountManager accountManager, GameManager gameManager) {
+    public void execute(Session session, AccountManager accountManager, GameManager gameManager, QuestionsManager questionsManager) {
         ResponseGenerator responseGenerator = new ResponseGenerator();
         StatementType result = accountManager.signIn(session, username, password);
         try {

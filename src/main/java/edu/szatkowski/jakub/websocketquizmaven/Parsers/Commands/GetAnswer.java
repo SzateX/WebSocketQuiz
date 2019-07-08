@@ -9,10 +9,10 @@ import edu.szatkowski.jakub.websocketquizmaven.Helpers.Enums.StatementType;
 import edu.szatkowski.jakub.websocketquizmaven.Helpers.ResponseGenerator;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
-import edu.szatkowski.jakub.websocketquizmaven.HelperModels.Game;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
+import edu.szatkowski.jakub.websocketquizmaven.Models.Answer;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
-import edu.szatkowski.jakub.websocketquizmaven.Responses.GameRemovedResponse;
+import edu.szatkowski.jakub.websocketquizmaven.Responses.EntityDetailsResponse;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,10 +20,10 @@ import javax.websocket.Session;
 
 /**
  *
- * @author Jakub.Szatkowski.2
+ * @author Szatku
  */
-public class StartGameCommand implements ICommand{
-    private int pin;
+public class GetAnswer implements ICommand{
+    private Long id;
     
     @Override
     public void execute(Session session, AccountManager accountManager, GameManager gameManager, QuestionsManager questionsManager) {
@@ -34,21 +34,14 @@ public class StartGameCommand implements ICommand{
                 session.getBasicRemote().sendText(responseGenerator.generateErrorResponse(StatementType.NotLoggedIn));
                 return;
             }
-            Game game = gameManager.getGame(pin);
-            if(game == null)
-            {
-                session.getBasicRemote().sendText(responseGenerator.generateErrorResponse(StatementType.GameNotExist));
-                return;
-            }
             
-            game.startGame();
-            /*GameRemovedResponse response = new GameRemovedResponse(true);
-            session.getBasicRemote().sendText(responseGenerator.generateResponse(response));*/
+            Answer question = questionsManager.getAnswer(this.id);
+            EntityDetailsResponse response = new EntityDetailsResponse(question);
+            session.getBasicRemote().sendText(responseGenerator.generateResponse(response));
         }
         catch (IOException ex)
         {
             Logger.getLogger(CreateGameCommand.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 }

@@ -12,10 +12,10 @@ import java.util.HashMap;
  *
  * @author Jakub.Szatkowski.2
  */
-public class GetGamesResponse {
+public class GamesListResponse {
     HashMap<Integer, Game> games;
     
-    public GetGamesResponse(HashMap<Integer, Game> games)
+    public GamesListResponse(HashMap<Integer, Game> games)
     {
         this.games = games;
     }

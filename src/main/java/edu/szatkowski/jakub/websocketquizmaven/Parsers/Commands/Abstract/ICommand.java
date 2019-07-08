@@ -7,6 +7,7 @@ package edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract;
 
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
+import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
 import javax.websocket.Session;
 
 /**
@@ -14,5 +15,5 @@ import javax.websocket.Session;
  * @author Szatku
  */
 public interface ICommand {
-    public void execute(Session session, AccountManager accountManager, GameManager gameManager);
+    public void execute(Session session, AccountManager accountManager, GameManager gameManager, QuestionsManager questionsManager);
 }

@@ -5,6 +5,7 @@
  */
 package edu.szatkowski.jakub.websocketquizmaven;
 
+import com.google.gson.Gson;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
@@ -69,6 +70,13 @@ public class WebSocketHandler {
         AtomicBoolean m = new AtomicBoolean(session.equals(this.session));
         //session.getBasicRemote().sendText(m.toString());
         session.getBasicRemote().sendText(message);
-        commandParser.parseCommand(session, gameManager, accountManager, message);
+        try{
+            commandParser.parseCommand(session, gameManager, accountManager, questionsManager, message);
+        }
+        catch(Throwable e)
+        {
+            Gson gson = new Gson();
+            session.getBasicRemote().sendText(gson.toJson(e));
+        }
     }
 }

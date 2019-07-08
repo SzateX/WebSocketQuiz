@@ -7,6 +7,7 @@ package edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands;
 
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
+import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -20,7 +21,7 @@ import javax.websocket.Session;
 public class PingCommand implements ICommand{
     private String text;
     @Override
-    public void execute(Session session, AccountManager accountManager, GameManager gameManager) {
+    public void execute(Session session, AccountManager accountManager, GameManager gameManager, QuestionsManager questionsManager) {
         try {
             session.getBasicRemote().sendText(text);
         } catch (IOException ex) {

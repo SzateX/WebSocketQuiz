@@ -8,6 +8,7 @@ package edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands;
 import edu.szatkowski.jakub.websocketquizmaven.Helpers.ResponseGenerator;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
+import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.IsLoggedInResponse;
 import java.io.IOException;
@@ -23,7 +24,7 @@ import javax.websocket.Session;
 public class IsLoggedInCommand implements ICommand{
 
     @Override
-    public void execute(Session session, AccountManager accountManager, GameManager gameManager) {
+    public void execute(Session session, AccountManager accountManager, GameManager gameManager, QuestionsManager questionsManager) {
         boolean loggedIn = accountManager.isLoggedIn(session);
         try {
             ResponseGenerator generator = new ResponseGenerator();

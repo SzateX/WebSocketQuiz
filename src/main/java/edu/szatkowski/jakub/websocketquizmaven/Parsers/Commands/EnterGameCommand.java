@@ -10,6 +10,7 @@ import edu.szatkowski.jakub.websocketquizmaven.Helpers.ResponseGenerator;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
 import edu.szatkowski.jakub.websocketquizmaven.HelperModels.Game;
+import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.PlayerAddedResponse;
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class EnterGameCommand implements ICommand{
     private int pin;
     
     @Override
-    public void execute(Session session, AccountManager accountManager, GameManager gameManager) {
+    public void execute(Session session, AccountManager accountManager, GameManager gameManager, QuestionsManager questionsManager) {
         ResponseGenerator responseGenerator = new ResponseGenerator();
         Game game = gameManager.getGame(pin);
         try{

@@ -13,6 +13,7 @@ import edu.szatkowski.jakub.websocketquizmaven.Helpers.Enums.StatementType;
 import edu.szatkowski.jakub.websocketquizmaven.Helpers.ResponseGenerator;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
+import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -29,7 +30,7 @@ public class CommandParser {
         this.commandFactory = new CommandFactory();
     }
     
-    public void parseCommand(Session session, GameManager gameManager, AccountManager accountManager, String txt){
+    public void parseCommand(Session session, GameManager gameManager, AccountManager accountManager, QuestionsManager questionsManager, String txt){
         Gson gson = new Gson();
         JsonObject jsonObject = new JsonObject();
         try{
@@ -44,7 +45,7 @@ public class CommandParser {
             jsonObject.remove("command");
             ICommand command = this.commandFactory.getCommand(commandName, jsonObject);
             if(command != null)
-                command.execute(session, accountManager, gameManager);
+                command.execute(session, accountManager, gameManager, questionsManager);
             else
                 try {
                     session.getBasicRemote().sendText(new ResponseGenerator().generateErrorResponse(StatementType.CommandNotFound));

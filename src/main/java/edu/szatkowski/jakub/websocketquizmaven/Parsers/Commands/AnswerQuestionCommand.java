@@ -10,6 +10,7 @@ import edu.szatkowski.jakub.websocketquizmaven.Helpers.Enums.StatementType;
 import edu.szatkowski.jakub.websocketquizmaven.Helpers.ResponseGenerator;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
+import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.AnsweredQuestionResponse;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.PlayerAddedResponse;
@@ -27,7 +28,7 @@ public class AnswerQuestionCommand implements ICommand{
     private int answer;
 
     @Override
-    public void execute(Session session, AccountManager accountManager, GameManager gameManager) {
+    public void execute(Session session, AccountManager accountManager, GameManager gameManager, QuestionsManager questionsManager) {
         ResponseGenerator responseGenerator = new ResponseGenerator();
         Game game = gameManager.getGame(pin);
         try{

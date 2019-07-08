@@ -10,8 +10,9 @@ import edu.szatkowski.jakub.websocketquizmaven.Helpers.ResponseGenerator;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
 import edu.szatkowski.jakub.websocketquizmaven.HelperModels.Game;
+import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
-import edu.szatkowski.jakub.websocketquizmaven.Responses.GetGamesResponse;
+import edu.szatkowski.jakub.websocketquizmaven.Responses.GamesListResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -25,7 +26,7 @@ import javax.websocket.Session;
 public class GetGamesCommand implements ICommand{
 
     @Override
-    public void execute(Session session, AccountManager accountManager, GameManager gameManager) {
+    public void execute(Session session, AccountManager accountManager, GameManager gameManager, QuestionsManager questionsManager) {
         ResponseGenerator responseGenerator = new ResponseGenerator();
         try{
             if(!accountManager.isLoggedIn(session))
@@ -34,7 +35,7 @@ public class GetGamesCommand implements ICommand{
                 return;
             }
             HashMap<Integer, Game> games = gameManager.getGames();
-            GetGamesResponse response = new GetGamesResponse(games);
+            GamesListResponse response = new GamesListResponse(games);
             session.getBasicRemote().sendText(responseGenerator.generateResponse(response));
         }
         catch (IOException ex)

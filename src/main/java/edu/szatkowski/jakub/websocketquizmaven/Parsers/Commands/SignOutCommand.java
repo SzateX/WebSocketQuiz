@@ -9,6 +9,7 @@ import edu.szatkowski.jakub.websocketquizmaven.Helpers.Enums.StatementType;
 import edu.szatkowski.jakub.websocketquizmaven.Helpers.ResponseGenerator;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
+import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.SignOutResponse;
 import java.io.IOException;
@@ -23,7 +24,7 @@ import javax.websocket.Session;
 public class SignOutCommand implements ICommand{
 
     @Override
-    public void execute(Session session, AccountManager accountManager, GameManager gameManager) {
+    public void execute(Session session, AccountManager accountManager, GameManager gameManager, QuestionsManager questionsManager) {
         ResponseGenerator responseGenerator = new ResponseGenerator();
         StatementType result = accountManager.signOut(session);
         try {
