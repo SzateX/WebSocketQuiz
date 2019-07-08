@@ -55,6 +55,21 @@ public class QuestionsManager {
         return question;
     }
     
+    public Long addQuestion(Question question)
+    {
+        return this.addEntity(question);
+    }
+    
+    public void removeQuestion(Question question)
+    {
+        this.removeEntity(question);
+    }
+    
+    public void updateQuestion(Question question)
+    {
+        this.updateEntity(question);
+    }
+    
     public List<Category> getCategories()
     {
         Session session = sessionFactory.openSession();
@@ -82,6 +97,21 @@ public class QuestionsManager {
         return category;
     }
     
+    public Long addCategory(Category category)
+    {
+        return this.addEntity(category);
+    }
+    
+    public void removeCategory(Category category)
+    {
+        this.removeEntity(category);
+    }
+    
+    public void updateCategory(Category category)
+    {
+        this.updateEntity(category);
+    }
+    
     public List<Answer> getAnswers()
     {
         Session session = sessionFactory.openSession();
@@ -104,5 +134,42 @@ public class QuestionsManager {
         Answer answer = (Answer) session.get(Answer.class, answerId);
         session.close();
         return answer;
+    }
+    
+    public Long addAnswer(Answer answer)
+    {
+        return this.addEntity(answer);
+    }
+    
+    public void removeAnswer(Answer answer)
+    {
+        this.removeEntity(answer);
+    }
+    
+    public void updateAnswer(Answer answer)
+    {
+        this.updateEntity(answer);
+    }
+    
+    private Long addEntity(Object obj)
+    {
+        Session session = sessionFactory.openSession();
+        Long id = (Long) session.save(obj);
+        session.close();
+        return id;
+    }
+    
+    private void removeEntity(Object obj)
+    {
+        Session session = sessionFactory.openSession();
+        session.delete(obj);
+        session.close();
+    }
+    
+    private void updateEntity(Object obj)
+    {
+        Session session = sessionFactory.openSession();
+        session.update(obj);
+        session.close();
     }
 }
