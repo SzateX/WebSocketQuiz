@@ -81,7 +81,7 @@ public class QuestionsManager {
     public Category getCategory(Long categoryId)
     {
         Session session = sessionFactory.openSession();
-        Category category = (Category) session.get(Question.class, categoryId);
+        Category category = (Category) session.get(Category.class, categoryId);
         session.close();
         return category;
     }
@@ -123,7 +123,7 @@ public class QuestionsManager {
     public List<Answer> getAnswersOfQuestion(Long questionId)
     {
         Session session = sessionFactory.openSession();
-        Question question = (Question) session.get(Question.class, questionId);
+        Question question = (Question) session.get(Answer.class, questionId);
         session.close();
         return new ArrayList(question.answers);
     }
@@ -162,14 +162,19 @@ public class QuestionsManager {
     private void removeEntity(Object obj)
     {
         Session session = sessionFactory.openSession();
+        session.beginTransaction();
         session.delete(obj);
+        session.getTransaction().commit();
         session.close();
     }
     
     private void updateEntity(Object obj)
     {
         Session session = sessionFactory.openSession();
-        session.update(obj);
+        //session.saveOrUpdate(obj);
+        session.beginTransaction();
+        session.merge(obj);
+        session.getTransaction().commit();
         session.close();
     }
 }

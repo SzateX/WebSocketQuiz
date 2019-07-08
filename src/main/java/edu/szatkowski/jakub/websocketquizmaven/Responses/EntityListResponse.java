@@ -17,6 +17,6 @@ public class EntityListResponse<T> {
 
     public EntityListResponse(List<T> entities, Class entityClass) {
         this.entities = entities;
-        this.entityClass = entityClass.getName();
+        this.entityClass = entityClass.getSimpleName();
     }
 }

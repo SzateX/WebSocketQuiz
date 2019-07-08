@@ -76,7 +76,7 @@ public class WebSocketHandler {
         catch(Throwable e)
         {
             Gson gson = new Gson();
-            session.getBasicRemote().sendText(gson.toJson(e));
+            session.getBasicRemote().sendText(e.toString());
         }
     }
 }

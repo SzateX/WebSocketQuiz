@@ -16,6 +16,6 @@ public class EntityCreatedResponse<T> {
     public EntityCreatedResponse(Long id, T entity)
     {
         this.id = id;
-        this.entityClass = entity.getClass().getName();
+        this.entityClass = entity.getClass().getSimpleName();
     }
 }

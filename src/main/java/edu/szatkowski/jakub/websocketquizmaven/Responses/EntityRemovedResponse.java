@@ -15,7 +15,7 @@ public class EntityRemovedResponse<T> {
 
     public EntityRemovedResponse(boolean removed, T entity) {
         this.removed = removed;
-        this.entityClass = entity.getClass().getName();
+        this.entityClass = entity.getClass().getSimpleName();
     }
     
 }

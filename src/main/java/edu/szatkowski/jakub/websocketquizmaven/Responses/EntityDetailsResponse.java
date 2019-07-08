@@ -15,7 +15,7 @@ public class EntityDetailsResponse<T> {
     
     public EntityDetailsResponse(T entity) {
         this.entity = entity;
-        entityString = entity.getClass().getName();
+        entityString = entity.getClass().getSimpleName();
     }
     
 }

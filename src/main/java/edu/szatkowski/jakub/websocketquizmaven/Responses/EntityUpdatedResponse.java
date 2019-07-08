@@ -17,6 +17,6 @@ public class EntityUpdatedResponse<T> {
 
     public EntityUpdatedResponse(T entity) {
         this.entity = entity;
-        this.entityClass = entity.getClass().getName();
+        this.entityClass = entity.getClass().getSimpleName();
     }
 }
