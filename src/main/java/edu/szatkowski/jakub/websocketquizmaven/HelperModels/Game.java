@@ -12,6 +12,7 @@ import edu.szatkowski.jakub.websocketquizmaven.Models.Category;
 import edu.szatkowski.jakub.websocketquizmaven.Models.Question;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.BadAnswerResponse;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.CorrectAnswerResponse;
+import edu.szatkowski.jakub.websocketquizmaven.Responses.EndGameResponse;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.QuestionResponse;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -116,7 +117,7 @@ public class Game {
         this.sendMessage(correctAnswers, this.responseGenerator.generateResponse(new CorrectAnswerResponse(correctAnswer)));
         
         this.answers.clear();
-        if(questionNo++ < 10)
+        if(questionNo++ < questions.size() - 1)
             deffer.schedule(() -> this.sendQuestion(), 10, TimeUnit.SECONDS);
         else
             stopGame();
@@ -135,6 +136,15 @@ public class Game {
     {
         this.gameStared = false;
         deffer = null;
+        int maxPossibleScore = questions.size();
+        for(Session s: players.keySet())
+        {
+            try {
+                s.getBasicRemote().sendText(this.responseGenerator.generateResponse(new EndGameResponse(players.get(s), maxPossibleScore)));
+            } catch (IOException ex) {
+                Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     private void broadcastMessage(String message)
