@@ -93,6 +93,10 @@ public class Game {
         this.gameStared = true;
         this.questions = this.questionsManager.getQuestionsFromCategory(category.categoryName);
         this.answers = new HashMap();
+        for(Session s: players.keySet())
+        {
+            players.put(s, 0);
+        }
         GameStartedResponse response = new GameStartedResponse(pin);
         this.broadcastMessage(responseGenerator.generateResponse(response));
         this.deffer = Executors.newSingleThreadScheduledExecutor();

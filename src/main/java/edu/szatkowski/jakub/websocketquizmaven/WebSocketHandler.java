@@ -6,11 +6,13 @@
 package edu.szatkowski.jakub.websocketquizmaven;
 
 import com.google.gson.Gson;
+import edu.szatkowski.jakub.websocketquizmaven.HelperModels.Game;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.CommandParser;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -59,6 +61,11 @@ public class WebSocketHandler {
 
     @OnClose
     public void close(Session session) {
+        HashMap<Integer, Game> games = gameManager.getGames();
+        for(Game game: games.values())
+        {
+            game.removePlayer(session);
+        }
     }
 
     @OnError
