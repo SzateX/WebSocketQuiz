@@ -13,6 +13,7 @@ import edu.szatkowski.jakub.websocketquizmaven.HelperModels.Game;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.GameRemovedResponse;
+import edu.szatkowski.jakub.websocketquizmaven.Responses.GameStartedResponse;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,8 +43,8 @@ public class StartGameCommand implements ICommand{
             }
             
             game.startGame();
-            /*GameRemovedResponse response = new GameRemovedResponse(true);
-            session.getBasicRemote().sendText(responseGenerator.generateResponse(response));*/
+            GameStartedResponse response = new GameStartedResponse(pin);
+            session.getBasicRemote().sendText(responseGenerator.generateResponse(response));
         }
         catch (IOException ex)
         {

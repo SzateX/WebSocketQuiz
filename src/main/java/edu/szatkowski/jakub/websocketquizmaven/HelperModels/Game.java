@@ -8,11 +8,13 @@ package edu.szatkowski.jakub.websocketquizmaven.HelperModels;
 import edu.szatkowski.jakub.websocketquizmaven.Helpers.Enums.StatementType;
 import edu.szatkowski.jakub.websocketquizmaven.Helpers.ResponseGenerator;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
+import edu.szatkowski.jakub.websocketquizmaven.Models.Answer;
 import edu.szatkowski.jakub.websocketquizmaven.Models.Category;
 import edu.szatkowski.jakub.websocketquizmaven.Models.Question;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.BadAnswerResponse;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.CorrectAnswerResponse;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.EndGameResponse;
+import edu.szatkowski.jakub.websocketquizmaven.Responses.GameStartedResponse;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.QuestionResponse;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,6 +60,7 @@ public class Game {
         this.gameStared = false;
         this.category = category;
         this.questionsManager = questionsManager;
+        this.responseGenerator = new ResponseGenerator();
     }
     
     public int getNumberOfPlayers()
@@ -90,13 +93,21 @@ public class Game {
         this.gameStared = true;
         this.questions = this.questionsManager.getQuestionsFromCategory(category.categoryName);
         this.answers = new HashMap();
+        GameStartedResponse response = new GameStartedResponse(pin);
+        this.broadcastMessage(responseGenerator.generateResponse(response));
         this.deffer = Executors.newSingleThreadScheduledExecutor();
         deffer.schedule(() -> this.sendQuestion(), 10, TimeUnit.SECONDS);
     }
     
     private void sendQuestion()
     {   
-        QuestionResponse response = new QuestionResponse(this.questions.get(this.questionNo));
+        Question q = new Question(this.questions.get(this.questionNo));
+        for(Answer a: q.answers)
+            {
+                a.question = null;
+            }
+        q.correctAnswer = -100;
+        QuestionResponse response = new QuestionResponse(q);
         this.broadcastMessage(this.responseGenerator.generateResponse(response));
         deffer.schedule(() -> this.sendAnswer(), 10, TimeUnit.SECONDS);
     }

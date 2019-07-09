@@ -38,7 +38,7 @@ public class Question {
     public String questionName;
     
     @Column()
-    public transient int correctAnswer;
+    public int correctAnswer;
     
     @OneToMany(mappedBy="question", cascade=CascadeType.ALL, orphanRemoval = true)
     public Set<Answer> answers;
@@ -52,4 +52,20 @@ public class Question {
     
     @Enumerated(EnumType.STRING)
     public AttachmentType attachmentType;
+
+    public Question()
+    {
+    }
+    
+    public Question(Question q) {
+        this.id = q.id;
+        this.questionName = q.questionName;
+        this.correctAnswer = q.correctAnswer;
+        this.answers = q.answers;
+        this.category = q.category;
+        this.attachment = q.attachment;
+        this.attachmentType = q.attachmentType;
+    }
+    
+    
 }
