@@ -12,9 +12,8 @@ import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
 import edu.szatkowski.jakub.websocketquizmaven.Models.Answer;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
-import edu.szatkowski.jakub.websocketquizmaven.Responses.EntityListResponse;
+import edu.szatkowski.jakub.websocketquizmaven.Responses.EntityDetailsResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.Session;
@@ -23,8 +22,9 @@ import javax.websocket.Session;
  *
  * @author Szatku
  */
-public class GetAnswersOfQuestion implements ICommand{
-    private Long questionId;
+public class GetAnswerCommand implements ICommand{
+    private Long id;
+    
     @Override
     public void execute(Session session, AccountManager accountManager, GameManager gameManager, QuestionsManager questionsManager) {
         ResponseGenerator responseGenerator = new ResponseGenerator();
@@ -35,13 +35,14 @@ public class GetAnswersOfQuestion implements ICommand{
                 return;
             }
             
-            List<Answer> questions = questionsManager.getAnswersOfQuestion(questionId);
-            EntityListResponse response = new EntityListResponse(questions, Answer.class);
+            Answer question = questionsManager.getAnswer(this.id);
+            question.question.answers = null;
+            EntityDetailsResponse response = new EntityDetailsResponse(question);
             session.getBasicRemote().sendText(responseGenerator.generateResponse(response));
         }
         catch (IOException ex)
         {
             Logger.getLogger(CreateGameCommand.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
+    }
 }

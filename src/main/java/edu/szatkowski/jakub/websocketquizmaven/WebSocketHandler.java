@@ -77,6 +77,7 @@ public class WebSocketHandler {
         {
             Gson gson = new Gson();
             session.getBasicRemote().sendText(e.toString());
+            e.printStackTrace();
         }
     }
 }

@@ -10,6 +10,7 @@ import edu.szatkowski.jakub.websocketquizmaven.Helpers.ResponseGenerator;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
+import edu.szatkowski.jakub.websocketquizmaven.Models.Answer;
 import edu.szatkowski.jakub.websocketquizmaven.Models.Question;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.EntityDetailsResponse;
@@ -37,6 +38,10 @@ public class GetQuestionCommand implements ICommand{
             }
             
             Question question = questionsManager.getQuestion(this.id);
+            for(Answer a: question.answers)
+            {
+                a.question = null;
+            }
             EntityDetailsResponse response = new EntityDetailsResponse(question);
             session.getBasicRemote().sendText(responseGenerator.generateResponse(response));
         }

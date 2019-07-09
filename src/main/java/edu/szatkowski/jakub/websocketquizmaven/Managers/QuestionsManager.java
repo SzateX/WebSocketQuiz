@@ -5,6 +5,7 @@
  */
 package edu.szatkowski.jakub.websocketquizmaven.Managers;
 
+import edu.szatkowski.jakub.websocketquizmaven.Helpers.QuestionDTO;
 import edu.szatkowski.jakub.websocketquizmaven.Models.Answer;
 import edu.szatkowski.jakub.websocketquizmaven.Models.Category;
 import edu.szatkowski.jakub.websocketquizmaven.Models.Question;
@@ -55,14 +56,32 @@ public class QuestionsManager {
         return question;
     }
     
-    public Long addQuestion(Question question)
+    public Long addQuestion(QuestionDTO question)
     {
-        return this.addEntity(question);
+        Question q = new Question();
+        q.attachment = question.attachment;
+        q.attachmentType = question.attachmentType;
+        q.category = question.category;
+        q.correctAnswer = question.correctAnswer;
+        q.questionName = question.questionName;
+        Long id = this.addEntity(q);
+        q.id = id;
+        for(Answer answer: question.answers)
+        {
+            answer.question = q;
+            this.addEntity(answer);
+        }
+        
+        return id;
     }
     
     public void removeQuestion(Question question)
     {
-        this.removeEntity(question);
+        Question q = this.getQuestion(question.id);
+        List<Answer> answers = this.getAnswersOfQuestion(q.id);
+        for(Answer a: answers)
+            this.removeEntity(a);
+        this.removeEntity(q);
     }
     
     public void updateQuestion(Question question)
@@ -123,9 +142,13 @@ public class QuestionsManager {
     public List<Answer> getAnswersOfQuestion(Long questionId)
     {
         Session session = sessionFactory.openSession();
-        Question question = (Question) session.get(Answer.class, questionId);
+        //Question question = (Question) session.get(Question.class, questionId);
+        List answers = session.createCriteria(Answer.class)
+                .createAlias("question", "q")
+                .add(Restrictions.eq("q.id", questionId))
+                .list();
         session.close();
-        return new ArrayList(question.answers);
+        return new ArrayList(answers);
     }
     
     public Answer getAnswer(Long answerId)

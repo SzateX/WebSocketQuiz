@@ -10,6 +10,7 @@ import edu.szatkowski.jakub.websocketquizmaven.Helpers.ResponseGenerator;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
+import edu.szatkowski.jakub.websocketquizmaven.Models.Answer;
 import edu.szatkowski.jakub.websocketquizmaven.Models.Question;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.EntityListResponse;
@@ -24,7 +25,7 @@ import javax.websocket.Session;
  * @author Szatku
  */
 public class GetQuestionsFromCategoryCommand implements ICommand {
-    private String category;
+    private String categoryName;
             
     @Override
     public void execute(Session session, AccountManager accountManager, GameManager gameManager, QuestionsManager questionsManager) {
@@ -36,7 +37,14 @@ public class GetQuestionsFromCategoryCommand implements ICommand {
                 return;
             }
             
-            List<Question> questions = questionsManager.getQuestionsFromCategory(category);
+            List<Question> questions = questionsManager.getQuestionsFromCategory(categoryName);
+            for(Question q: questions)
+            {
+                for(Answer a: q.answers)
+                {
+                    a.question = null;
+                }
+            }
             EntityListResponse response = new EntityListResponse(questions, Question.class);
             session.getBasicRemote().sendText(responseGenerator.generateResponse(response));
         }

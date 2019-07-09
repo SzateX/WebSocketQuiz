@@ -29,5 +29,5 @@ public class Category{
     public String categoryName;
     
     @OneToMany(mappedBy="category")
-    public Set<Question> questions;
+    public transient Set<Question> questions;
 }

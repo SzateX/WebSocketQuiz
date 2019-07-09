@@ -11,6 +11,7 @@ import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
 import edu.szatkowski.jakub.websocketquizmaven.Models.Answer;
+import edu.szatkowski.jakub.websocketquizmaven.Models.Question;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.EntityListResponse;
 import java.io.IOException;
@@ -36,6 +37,10 @@ public class GetAnswersCommand implements ICommand{
             }
             
             List<Answer> questions = questionsManager.getAnswers();
+            for(Answer a: questions)
+            {
+                a.question.answers = null;
+            }
             EntityListResponse response = new EntityListResponse(questions, Answer.class);
             session.getBasicRemote().sendText(responseGenerator.generateResponse(response));
         }

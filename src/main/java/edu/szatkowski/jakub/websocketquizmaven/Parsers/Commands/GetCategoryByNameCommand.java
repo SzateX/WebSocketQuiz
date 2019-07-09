@@ -10,7 +10,7 @@ import edu.szatkowski.jakub.websocketquizmaven.Helpers.ResponseGenerator;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
-import edu.szatkowski.jakub.websocketquizmaven.Models.Answer;
+import edu.szatkowski.jakub.websocketquizmaven.Models.Category;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.EntityDetailsResponse;
 import java.io.IOException;
@@ -22,8 +22,8 @@ import javax.websocket.Session;
  *
  * @author Szatku
  */
-public class GetAnswer implements ICommand{
-    private Long id;
+public class GetCategoryByNameCommand implements ICommand{
+    private String categoryName;
     
     @Override
     public void execute(Session session, AccountManager accountManager, GameManager gameManager, QuestionsManager questionsManager) {
@@ -35,7 +35,7 @@ public class GetAnswer implements ICommand{
                 return;
             }
             
-            Answer question = questionsManager.getAnswer(this.id);
+            Category question = questionsManager.getCategoryByName(categoryName);
             EntityDetailsResponse response = new EntityDetailsResponse(question);
             session.getBasicRemote().sendText(responseGenerator.generateResponse(response));
         }

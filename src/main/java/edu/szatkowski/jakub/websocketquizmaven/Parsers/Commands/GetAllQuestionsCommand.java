@@ -10,6 +10,7 @@ import edu.szatkowski.jakub.websocketquizmaven.Helpers.ResponseGenerator;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
+import edu.szatkowski.jakub.websocketquizmaven.Models.Answer;
 import edu.szatkowski.jakub.websocketquizmaven.Models.Question;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
 import edu.szatkowski.jakub.websocketquizmaven.Responses.EntityListResponse;
@@ -36,6 +37,11 @@ public class GetAllQuestionsCommand implements ICommand {
             }
             
             List<Question> questions = questionsManager.getAllQuestions();
+            questions.stream().forEach((q) -> {
+                q.answers.stream().forEach((a) -> {
+                    a.question = null;
+                });
+            });
             EntityListResponse response = new EntityListResponse(questions, Question.class);
             session.getBasicRemote().sendText(responseGenerator.generateResponse(response));
         }

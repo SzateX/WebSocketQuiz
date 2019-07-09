@@ -6,6 +6,7 @@
 package edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands;
 
 import edu.szatkowski.jakub.websocketquizmaven.Helpers.Enums.StatementType;
+import edu.szatkowski.jakub.websocketquizmaven.Helpers.QuestionDTO;
 import edu.szatkowski.jakub.websocketquizmaven.Helpers.ResponseGenerator;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
@@ -24,7 +25,7 @@ import javax.websocket.Session;
  * @author Szatku
  */
 public class AddQuestionCommand implements ICommand{
-    private Question question;
+    private QuestionDTO question;
     
     @Override
     public void execute(Session session, AccountManager accountManager, GameManager gameManager, QuestionsManager questionsManager) {

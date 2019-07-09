@@ -33,7 +33,7 @@ public class Answer {
     @Column()
     public String answerName;
     
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name="id_question", nullable=false)
     public Question question;
 }

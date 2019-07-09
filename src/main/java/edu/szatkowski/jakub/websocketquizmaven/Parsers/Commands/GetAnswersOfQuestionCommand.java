@@ -10,10 +10,11 @@ import edu.szatkowski.jakub.websocketquizmaven.Helpers.ResponseGenerator;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.AccountManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.GameManager;
 import edu.szatkowski.jakub.websocketquizmaven.Managers.QuestionsManager;
-import edu.szatkowski.jakub.websocketquizmaven.Models.Category;
+import edu.szatkowski.jakub.websocketquizmaven.Models.Answer;
 import edu.szatkowski.jakub.websocketquizmaven.Parsers.Commands.Abstract.ICommand;
-import edu.szatkowski.jakub.websocketquizmaven.Responses.EntityDetailsResponse;
+import edu.szatkowski.jakub.websocketquizmaven.Responses.EntityListResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.Session;
@@ -22,9 +23,8 @@ import javax.websocket.Session;
  *
  * @author Szatku
  */
-public class GetCategoryByName implements ICommand{
-    private String categoryName;
-    
+public class GetAnswersOfQuestionCommand implements ICommand{
+    private Long questionId;
     @Override
     public void execute(Session session, AccountManager accountManager, GameManager gameManager, QuestionsManager questionsManager) {
         ResponseGenerator responseGenerator = new ResponseGenerator();
@@ -35,13 +35,17 @@ public class GetCategoryByName implements ICommand{
                 return;
             }
             
-            Category question = questionsManager.getCategoryByName(categoryName);
-            EntityDetailsResponse response = new EntityDetailsResponse(question);
+            List<Answer> questions = questionsManager.getAnswersOfQuestion(questionId);
+            for(Answer a: questions)
+            {
+                a.question.answers = null;
+            }
+            EntityListResponse response = new EntityListResponse(questions, Answer.class);
             session.getBasicRemote().sendText(responseGenerator.generateResponse(response));
         }
         catch (IOException ex)
         {
             Logger.getLogger(CreateGameCommand.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+    }    
 }
